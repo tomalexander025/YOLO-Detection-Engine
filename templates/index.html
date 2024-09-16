@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ultralytics YOLOv Detection Project</title>
+    
+    <!-- Include Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    
+    <!-- Include the custom styles for transparency and grain effect -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    
+    <!-- Script for dynamic model loading -->
+    <script id="model-data" type="application/json">
+        {{ models | tojson | safe }}
+    </script>
+    <script>
+        function updateModelOptions() {
+            var category = document.getElementById("model_category").value;
+            var modelSelect = document.getElementById("model");
+
+            var models = JSON.parse(document.getElementById('model-data').textContent);
+            
+            modelSelect.innerHTML = "";
+            if (models[category]) {
+                models[category].forEach(function(model) {
+                    var option = document.createElement("option");
+                    option.value = model;
+                    option.text = model;
+                    modelSelect.add(option);
+                });
+            }
+        }
+    </script>
+</head>
+<body>
+    <!-- Main container for page content -->
+    <div class="container mt-5">
+        <!-- Header with title -->
+        <h1 class="text-center mb-4">YOLO-Based Object Detection for Uploaded Videos with Custom Model Configuration</h1>
+        
+        <!-- Form for video upload and detection settings -->
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="grainy-background">
+                    <form action="/upload" method="post" enctype="multipart/form-data" class="transparent-form p-4 rounded shadow">
+                        <!-- Video Upload -->
+                        <div class="form-group">
+                            <label for="video">Upload Video:</label>
+                            <input type="file" class="form-control-file" id="video" name="video" accept="video/mp4, video/avi" required>
+                        </div>
+
+                        <!-- Model Category Selection -->
+                        <div class="form-group">
+                            <label for="model_category">Choose YOLO Model Category:</label>
+                            <select id="model_category" name="model_category" class="form-control" onchange="updateModelOptions()" required>
+                                <option value="">Select Category</option>
+                                {% for category, models in models.items() %}
+                                    <option value="{{ category }}">{{ category }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <!-- Model Selection -->
+                        <div class="form-group">
+                            <label for="model">Choose YOLO Model:</label>
+                            <select id="model" name="model" class="form-control" required>
+                                <option value="">Select Model</option>
+                            </select>
+                        </div>
+
+                        <!-- Classes Input -->
+                        <div class="form-group">
+                            <label for="classes">Classes to Count (comma-separated):</label>
+                            <input type="text" class="form-control" id="classes" name="classes" placeholder="1, 2, 3" required>
+                        </div>
+
+                        <!-- Points Input -->
+                        <div class="form-group">
+                            <label for="points">Region Points (format: (x1,y1); (x2,y2); ...):</label>
+                            <input type="text" class="form-control" id="points" name="points" placeholder="(10,20); (30,40)" required>
+                        </div>
+
+                        <!-- Save Directory Input -->
+                        <div class="form-group">
+                            <label for="save_directory">Save Directory Path:</label>
+                            <input type="text" class="form-control" id="save_directory" name="save_directory" placeholder="{{ default_save_dir }}" value="{{ default_save_dir }}" required>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <button type="submit" class="btn btn-primary">Start Detection</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Message Display -->
+        {% if message %}
+        <div class="alert alert-info mt-4" role="alert">
+            {{ message }}
+        </div>
+        {% endif %}
+        
+        <!-- Stop Detection Button -->
+        <form action="/stop" method="post" class="mt-4">
+            <button type="submit" class="btn btn-danger">Stop Detection</button>
+        </form>
+    </div>
+    
+    <!-- Include Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

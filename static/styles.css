@@ -1,0 +1,109 @@
+/* Set gradient background and center body content */
+body {
+    background-color: #f8f9fa;
+    font-family: Arial, sans-serif;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    /* Gradient Background */
+    background: linear-gradient(135deg, #9894e1, #6aabeb, #cf70dc);
+    background-size: 200% 200%;
+    animation: gradientAnimation 3s ease infinite; /* Faster gradient animation */
+}
+
+/* Optional: Animation for a moving gradient */
+@keyframes gradientAnimation {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+/* Grainy texture effect */
+.grainy-background {
+    position: relative;
+    background: transparent;
+    overflow: hidden;
+}
+
+.grainy-background:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('https://www.transparenttextures.com/patterns/asfalt-dark.png'); /* Grainy texture */
+    opacity: 0.3;
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* Transparent form styling */
+.transparent-form {
+    background-color: rgba(187, 104, 74, 0.2); /* Semi-transparent white */
+    backdrop-filter: blur(10px); /* Optional blur for glass-like effect */
+    padding: 20px;
+    border-radius: 8px;
+    position: relative;
+    z-index: 2; /* Ensure form is above the grainy background */
+    box-shadow: 0px 4px 8px rgba(157, 72, 72, 0.1);
+}
+
+/* Form field adjustments */
+input[type="file"], input[type="text"], select {
+    margin-bottom: 15px;
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.8); /* Slightly transparent input fields */
+}
+
+/* Buttons */
+button {
+    border-radius: 5px;
+    padding: 10px;
+}
+
+button.btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+    transition: background-color 0.3s ease;
+}
+
+button.btn-primary:hover {
+    background-color: #0056b3;
+}
+
+button.btn-danger {
+    background-color: #dc3545;
+    border-color: #dc3545;
+    transition: background-color 0.3s ease;
+}
+
+button.btn-danger:hover {
+    background-color: #c82333;
+}
+
+/* Adjust alert box */
+.alert {
+    margin-top: 10px;
+}
+
+/* Custom styles for <h1> */
+h1 {
+    font-family: 'Roboto', sans-serif; /* Change to desired font family */
+    font-size: 2.5rem; /* Adjust size as needed */
+    font-weight: 700; /* Adjust weight as needed */
+    color: #333; /* Change to desired color */
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2); /* Optional: add shadow for better readability */
+    margin-top: 8rem;
+}
